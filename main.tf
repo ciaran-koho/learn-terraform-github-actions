@@ -12,7 +12,7 @@ terraform {
   required_version = "~> 0.14"
 
   backend "remote" {
-    organization = "REPLACE_ME"
+    organization = "koho"
 
     workspaces {
       name = "gh-actions-demo"
@@ -22,8 +22,18 @@ terraform {
 
 
 provider "aws" {
-  region = "us-west-2"
+  assume_role {
+    role_arn     = "arn:aws:iam::022292195207:role/StagingTerraformAdminRole"
+    session_name = "Terraform"
+    external_id  = var.external_id
+  }
+  region     = "us-west-2"
+  access_key = var.access_key
+  secret_key = var.secret_key
 }
+variable "access_key" {}
+variable "secret_key" {}
+variable "external_id" {}
 
 
 
